@@ -21,7 +21,7 @@ public class HelpCommand implements ICommand {
         if(args.isEmpty()){
             StringBuilder builder = new StringBuilder();
 
-            builder.append("List of commands\n");
+            builder.append("Список команд:\n");
 
             manager.getCommands().stream().map(ICommand::getName).forEach((it) -> builder.append(it).append('\n'));
             System.out.println(builder);
