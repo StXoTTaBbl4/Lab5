@@ -5,6 +5,7 @@ import DataClasses.Coordinates;
 import DataClasses.Person;
 import DataClasses.Position;
 import DataClasses.Worker;
+import com.sun.corba.se.impl.encoding.BufferQueue;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,8 +30,8 @@ public class AddCommand implements ICommand {
         LocalDate startDate;
         LocalDateTime endDate;
         Position position;
-        Person person;
-        String passportID;
+        Person person = new Person();
+        //String passportID;
         //LocalDateTime personBD;
         //int height;
         //Float weight;
@@ -129,70 +130,6 @@ public class AddCommand implements ICommand {
                 }
             }
 
-            person = new Person();
-            while (true) {
-                try {
-                    System.out.println("Полe birthday(формат: Г-М-Д Ч:М):");
-                    String[] PData = reader.readLine().split(" ");
-                    String[] ed = PData[0].split("-");
-                    String[] et = PData[1].split(":");
-                    /*
-                    personBD = LocalDateTime.of(Integer.parseInt(ed[0]),
-                            Integer.parseInt(ed[1]),
-                            Integer.parseInt(ed[2]),
-                            Integer.parseInt(et[0]),
-                            Integer.parseInt(et[1]));
-                    */
-                    person.setBirthday(LocalDateTime.of(Integer.parseInt(ed[0]),
-                            Integer.parseInt(ed[1]),
-                            Integer.parseInt(ed[2]),
-                            Integer.parseInt(et[0]),
-                            Integer.parseInt(et[1])));
-                    break;
-                } catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    System.out.println("Некорректные данные поля birthday. Пример: 2000-10-12 16:35");
-                }
-            }
-
-                while (true) {
-                    try {
-                        System.out.println("Полe height(больше 0, не может быть пустым):");
-                        //height = Integer.parseInt(reader.readLine());
-                        person.setHeight(Integer.parseInt(reader.readLine()));
-                        break;
-                    } catch (NumberFormatException e) {
-                        System.out.println("Некорректный тип данных.");
-                    }
-                }
-
-                while (true) {
-                    try {
-                        System.out.println("Полe weight(больше 0):");
-                        //weight = Float.parseFloat(reader.readLine());
-                        person.setWeight(Float.parseFloat(reader.readLine()));
-                        break;
-                    } catch (NumberFormatException e) {
-                        System.out.println("Некорректный тип данных.");
-                    }
-                }
-
-                while (true) {
-                    try {
-                        System.out.println("Полe passportID(от 4 до 29 символов, не может быть пустым):");
-                        passportID = reader.readLine();
-
-                        if(passportID.length()<29 && passportID.length() > 4)
-                            person.setPassportID(passportID);
-                        else
-                            throw new IOException();
-                        break;
-                    } catch (IOException e) {
-                        System.out.println("Некорректная длина.");
-                    }
-                }
-
-
-
             worker = new Worker(id,
                     name,
                     coordinates,
@@ -201,7 +138,7 @@ public class AddCommand implements ICommand {
                     startDate,
                     endDate,
                     position,
-                    person);
+                    createNewPerson(reader,person));
 
             WorkerData.add(worker);
         }
@@ -211,7 +148,6 @@ public class AddCommand implements ICommand {
 
         return WorkerData;
         }
-
         /*
         Gson gson = new Gson();
         Worker worker = gson.fromJson("["+args+"]",Worker.class);
@@ -226,6 +162,66 @@ public class AddCommand implements ICommand {
         @Override
         public String getHelp () {
             return "Добавляет в коллекцию новый элемент с указанными параметрами, ввод данных построчно";
+        }
+
+        public Person createNewPerson(BufferedReader reader, Person person){
+
+            while (true) {
+                try {
+                    System.out.println("Полe birthday(формат: Г-М-Д Ч:М):");
+                    String[] PData = reader.readLine().split(" ");
+                    String[] ed = PData[0].split("-");
+                    String[] et = PData[1].split(":");
+
+                    person.setBirthday(LocalDateTime.of(Integer.parseInt(ed[0]),
+                            Integer.parseInt(ed[1]),
+                            Integer.parseInt(ed[2]),
+                            Integer.parseInt(et[0]),
+                            Integer.parseInt(et[1])));
+                    break;
+                } catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException | IOException e) {
+                    System.out.println("Некорректные данные поля birthday. Пример: 2000-10-12 16:35");
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.println("Полe height(больше 0, не может быть пустым):");
+                    //height = Integer.parseInt(reader.readLine());
+                    person.setHeight(Integer.parseInt(reader.readLine()));
+                    break;
+                } catch (NumberFormatException | IOException e) {
+                    System.out.println("Некорректный тип данных.");
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.println("Полe weight(больше 0):");
+                    //weight = Float.parseFloat(reader.readLine());
+                    person.setWeight(Float.parseFloat(reader.readLine()));
+                    break;
+                } catch (NumberFormatException | IOException e) {
+                    System.out.println("Некорректный тип данных.");
+                }
+            }
+
+            while (true) {
+                try {
+                    System.out.println("Полe passportID(от 4 до 29 символов, не может быть пустым):");
+                    String passportID = reader.readLine();
+
+                    if(passportID.length()<29 && passportID.length() > 4)
+                        person.setPassportID(passportID);
+                    else
+                        throw new IOException();
+                    break;
+                } catch (IOException e) {
+                    System.out.println("Некорректная длина.");
+                }
+            }
+
+            return person;
         }
 
     }
