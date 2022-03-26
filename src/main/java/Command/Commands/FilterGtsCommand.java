@@ -6,6 +6,7 @@ import DataClasses.Worker;
 import java.util.LinkedList;
 
 public class FilterGtsCommand implements ICommand {
+    //filter greater then salary
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {
 
@@ -39,6 +40,4 @@ public class FilterGtsCommand implements ICommand {
     public String getHelp() {
         return "Выводит элементы, значение поля salary которых больше заданного.";
     }
-    //filter greater then salary
-
 }

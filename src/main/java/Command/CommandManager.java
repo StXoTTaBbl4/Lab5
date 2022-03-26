@@ -22,6 +22,7 @@ public class CommandManager {
         addCommand(new AddIfMaxCommand(this));
         addCommand(new ClearCommand());
         addCommand(new FilterGtsCommand());
+        addCommand(new GroupCbsCommand());
         addCommand(new HelpCommand(this));
         addCommand(new InfoCommand(path));
         addCommand(new RemoveIdCommand());
