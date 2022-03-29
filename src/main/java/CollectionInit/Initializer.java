@@ -80,7 +80,8 @@ public class Initializer {
             try {
                 WorkersData = gson.fromJson(String.valueOf(GsonData), type);
             }
-            catch (IllegalStateException ignored){
+            atch (IllegalStateException | JsonSyntaxException e){
+                System.out.println("Некорректные данные в файле, создана пустая коллекция.");
             }
 
         }
