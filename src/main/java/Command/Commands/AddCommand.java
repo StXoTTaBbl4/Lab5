@@ -30,7 +30,6 @@ public class AddCommand implements ICommand {
             System.out.println("Указаны не все параметры.");
             return WorkerData;
         }
-        //System.out.println(Arrays.toString(userData));
 
         Worker worker;
         Integer id;
@@ -38,7 +37,7 @@ public class AddCommand implements ICommand {
         Coordinates coordinates;
         Float salary;
         LocalDate startDate;
-        LocalDateTime endDate;
+        LocalDateTime endDate = null;
         Position position = null;
         Person person = new Person();
 
@@ -48,12 +47,10 @@ public class AddCommand implements ICommand {
         catch (NoSuchElementException e){
             id = 1;
         }
-        //System.out.println("id done");
 
         name = userData[0];
         if(name.equals(""))
             System.out.println("Поле name не может быть пустым.");
-        //System.out.println("name done: " + name);
 
         try {
             Float x = Float.parseFloat(userData[1]);
@@ -61,19 +58,17 @@ public class AddCommand implements ICommand {
             coordinates = new Coordinates(x, y);
         }
         catch (NumberFormatException e) {
-            System.out.println("Ошибка типа данных у Coordinates(x/y).");
+            System.out.println("Ошибка типа данных у Coordinates(x/y). Поля не могут быть null.");
             return WorkerData;
         }
-        //System.out.println("coordinate done: " + coordinates);
 
         try {
             salary = Float.parseFloat(userData[3]);
         }
         catch (NumberFormatException e) {
-            System.out.println("Ошибка типа данных поля salary.");
+            System.out.println("Ошибка типа данных поля salary. Поле не может быть null.");
             return WorkerData;
         }
-        //System.out.println("salary done: " + salary);
 
         try {
             String[] stData = userData[4].split("-");
@@ -82,17 +77,13 @@ public class AddCommand implements ICommand {
                     Integer.parseInt(stData[2]));
         }
         catch (DateTimeException | NumberFormatException e) {
-            System.out.println("Ошибка в данных startDate, пример: 2000-10-15.");
+            System.out.println("Ошибка в данных startDate, пример: 2000-10-15. Поле не может быть null");
             return WorkerData;
         }
-        //System.out.println("startD done: " + startDate);
 
         try {
             String s = userData[5];
-            if(s.equals("") || s.equals("null")){
-                endDate = null;
-            }
-            else {
+            if(!s.equals("")){
                 String[] ed = userData[5].split("-");
                 String[] et = userData[6].split(":");
                 endDate = LocalDateTime.of(Integer.parseInt(ed[0]),
@@ -106,10 +97,11 @@ public class AddCommand implements ICommand {
             System.out.println("Ошибка в данных endDate, пример: 2000-10-15.");
             return WorkerData;
         }
-        //System.out.println("endD done: " + endDate);
 
         try {
-            String pos = userData[7];
+            String pos;
+            pos = userData[7];
+
             if (!pos.equals(""))
                 position = Position.valueOf(pos);
         }
@@ -117,12 +109,10 @@ public class AddCommand implements ICommand {
             System.out.println("Некорректные данные position. Пример: MANAGER.");
             return WorkerData;
         }
-        //System.out.println("posit done: " + position + " err " + userData[7]);
+
         person = createNewPerson(userData[8],userData[9],userData[10],userData[11],userData[12], person);
 
-        if(person == null)
-            return WorkerData;
-        else {
+        if(person != null) {
             worker = new Worker(id,
                     name,
                     coordinates,
@@ -134,9 +124,8 @@ public class AddCommand implements ICommand {
                     person);
 
             WorkerData.add(worker);
-
-            return WorkerData;
         }
+        return WorkerData;
     }
 
         @Override
@@ -148,13 +137,15 @@ public class AddCommand implements ICommand {
         public String getHelp () {
             return "Добавляет в коллекцию новый элемент, порядок ввода:\n" +
                     "name, X, Y, salary, startDate, endDate(date, time), position, birthday(date, time), height, weight, passportID.\n" +
-                    "Пример: Kevin 10.5 10.5 15.5 2002-02-02 null null MANAGER 2002-02-02 15:26 180 65 888888.";
+                    "Пример: Kevin 10.5 10.5 15.5 2002-02-02 2020-12-12 15:50 MANAGER 2002-02-02 15:26 180 65 888888.\n" +
+                    "Чтобы оставить поле пустым, введите \"\"\n." +
+                    "Пустыми(null) могут быть: endDate, position, birthday и weight.";
         }
 
         public Person createNewPerson(String birthdayDate, String birthdayTime, String height, String weight, String passportID, Person person){
 
                 try {
-                    if (birthdayDate.equals("null"))
+                    if (birthdayDate.equals(""))
                         person.setBirthday(null);
                     else {
                         String[] perDate = birthdayDate.split("-");
@@ -179,8 +170,10 @@ public class AddCommand implements ICommand {
                 }
 
                 try {
-                    person.setWeight(Float.parseFloat(weight));
-
+                    if(weight.equals(""))
+                        person.setWeight(null);
+                    else
+                        person.setWeight(Float.parseFloat(weight));
                 } catch (NumberFormatException e) {
                     System.out.println("Некорректный тип данных weight.");
                 }

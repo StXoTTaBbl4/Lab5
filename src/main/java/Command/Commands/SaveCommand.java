@@ -40,7 +40,7 @@ public class SaveCommand implements ICommand {
         try(Writer fw = new OutputStreamWriter(new FileOutputStream(path))){
                 fw.write(gson.toJson(WorkersData));
                 fw.flush();
-            } catch (AccessDeniedException e) {
+            } catch (AccessDeniedException | FileNotFoundException e) {
             System.out.println("Ошибка доступа, невозможно записать.");
         }catch (IOException e) {
             e.printStackTrace();
