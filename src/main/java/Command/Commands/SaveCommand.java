@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
@@ -36,8 +37,10 @@ public class SaveCommand implements ICommand {
         try(Writer fw = new OutputStreamWriter(new FileOutputStream(path))){
                 fw.write(gson.toJson(WorkersData));
                 fw.flush();
-            } catch (IOException ioException) {
-            ioException.printStackTrace();
+            } catch (AccessDeniedException e) {
+            System.out.println("Ошибка доступа, невозможно записать.");
+        }catch (IOException e) {
+            e.printStackTrace();
         }
 
         return WorkersData;
