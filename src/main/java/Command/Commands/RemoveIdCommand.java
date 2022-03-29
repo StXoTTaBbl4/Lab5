@@ -8,22 +8,23 @@ import java.util.LinkedList;
 public class RemoveIdCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {
+        int id;
 
-        int id = Integer.parseInt(args);
-
-        Worker toRemove = null;
+        try {
+            id = Integer.parseInt(args);
+        } catch (NumberFormatException e) {
+            System.out.println("ID должно быть целым положительным числом больше 0.");
+            return WorkersData;
+        }
 
         for(Worker worker : WorkersData){
             if(worker.getId() == id){
-                toRemove = worker;
-                break;
+                WorkersData.remove(worker);
+                return WorkersData;
             }
         }
 
-        if(toRemove==null){
-            System.out.println("Работника с таким id нет");
-        }else
-            WorkersData.remove(toRemove);
+        System.out.println("Работника с таким id нет.");
 
         return WorkersData;
     }
@@ -35,6 +36,6 @@ public class RemoveIdCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Удаляет элемент с определенным id";
+        return "Удаляет элемент с определенным id.";
     }
 }

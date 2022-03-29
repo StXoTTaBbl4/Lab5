@@ -1,8 +1,8 @@
 package DataClasses;
 
 public class Coordinates {
-    private Float x;//NotNull
-    private Double y;//NotNull
+    private Float x;//Поле не может быть null
+    private Double y;//Поле не может быть null
 
     public Coordinates(Float x, Double y) {
         this.x = x;
@@ -17,11 +17,7 @@ public class Coordinates {
         return y;
     }
 
-    public void setX(Float x) {
-        this.x = x;
-    }
+    public void setX(Float x) {this.x = x;}
 
-    public void setY(Double y) {
-        this.y = y;
-    }
+    public void setY(Double y) {this.y = y;}
 }

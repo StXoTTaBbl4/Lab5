@@ -19,14 +19,12 @@ public class InfoCommand  implements ICommand {
 
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         File file = new File(path);
         Date d = new Date(file.lastModified());
-
-
+        DateFormat dateParser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         System.out.println("Тип: " + WorkersData.getClass().toString().replace("class","")+ "\n" +
-                           "Дата последнего изменения: "+ d + "\n" +
+                           "Дата последнего изменения: "+ dateParser.format(d) + "\n" +
                            "Кол-во элементов: " + WorkersData.size() + "\n");
 
         return WorkersData;
@@ -39,6 +37,7 @@ public class InfoCommand  implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Выводит в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов)";
+        return "Выводит в стандартный поток вывода информацию о коллекции\n" +
+                " (тип, дата инициализации, количество элементов).";
     }
 }

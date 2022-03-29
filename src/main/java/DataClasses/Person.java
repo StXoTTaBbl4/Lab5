@@ -3,10 +3,12 @@ package DataClasses;
 import java.time.LocalDateTime;
 
 public class Person {
-    private java.time.LocalDateTime birthday;
-    private int height;// >0
-    private Float weight;// Null or >0
-    private String passportID;// NotNull, not empty, 3<l<30
+    private java.time.LocalDateTime birthday;//Поле может быть null
+    private int height;//Значение поля должно быть больше 0
+    private Float weight; //Поле может быть null, Значение поля должно быть больше 0
+    private String passportID; //Длина строки должна быть не меньше 4, Строка не может быть пустой, Длина строки не должна быть больше 29, Поле не может быть null
+
+    public Person(){}
 
     public Person(LocalDateTime birthday, int height, Float weight, String passportID) {
         this.birthday = birthday;
@@ -14,8 +16,6 @@ public class Person {
         this.weight = weight;
         this.passportID = passportID;
     }
-
-    public Person(){}
 
     public int getHeight() {
         return height;

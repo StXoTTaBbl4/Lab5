@@ -21,6 +21,9 @@ public class CommandManager {
         addCommand(new AddCommand());
         addCommand(new AddIfMaxCommand(this));
         addCommand(new ClearCommand());
+        addCommand(new CountGtpCommand());
+        addCommand(new ExecuteScriptCommand(this));
+        addCommand(new ExitCommand());
         addCommand(new FilterGtsCommand());
         addCommand(new GroupCbsCommand());
         addCommand(new HelpCommand(this));
@@ -36,11 +39,10 @@ public class CommandManager {
     private void addCommand(ICommand cmd){
         boolean nameFound = this.commands.stream().anyMatch((it) -> it.getName().equalsIgnoreCase(cmd.getName()));
         if(nameFound){
-            throw new IllegalArgumentException("Команда с таким именем: "+cmd.getName()+" уже существует");
+            throw new IllegalArgumentException("Команда с именем: "+cmd.getName()+" уже существует");
         }
         commands.add(cmd);
     }
-
 
     public ICommand getCommand(String search){
         String searchLower = search.toLowerCase();
@@ -63,11 +65,8 @@ public class CommandManager {
 
               WorkerData = cmd.handle(args.toString().substring(1,args.toString().length()-1), WorkerData);
         }else{
-            System.out.println("Команда не найдена!");
+            System.out.println("Команда не найдена!\n");
         }
         return WorkerData;
     }
-
-
-
 }

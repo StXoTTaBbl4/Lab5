@@ -9,11 +9,17 @@ public class ShowCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {
 
-            for (Worker worker : WorkersData) {
-                try {
-                    System.out.println(worker.toString());
-                } catch (Exception e) {
-                    System.out.println("У работника с id: " + worker.getId() + " некорректные данные\n");
+            if(WorkersData.size() == 0) {
+                System.out.println("Коллекция пуста.");
+                return WorkersData;
+            }
+            else {
+                for (Worker worker : WorkersData) {
+                    try {
+                        System.out.println(worker.toString());
+                    } catch (NullPointerException e) {
+                        System.out.println("У работника с id: " + worker.getId() + " некорректные данные.\n");
+                    }
                 }
             }
 
@@ -27,6 +33,6 @@ public class ShowCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Выводит список элементов коллекции";
+        return "Выводит список элементов коллекции.";
     }
 }

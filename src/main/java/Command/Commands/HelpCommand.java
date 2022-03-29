@@ -30,7 +30,7 @@ public class HelpCommand implements ICommand {
             ICommand command = manager.getCommand(args);
 
             if (command == null) {
-                System.out.printf("Команда + %s не найдена", args);
+                System.out.printf("Команда + %s не найдена.\n", args);
             }else{
                 System.out.println(command.getHelp());
             }
@@ -46,6 +46,6 @@ public class HelpCommand implements ICommand {
     @Override
     public String getHelp() {
         return "С помощью этой команды можно получить справку по другим командам \n" +
-                "help [имя команды]";
+                "help [имя команды].";
     }
 }

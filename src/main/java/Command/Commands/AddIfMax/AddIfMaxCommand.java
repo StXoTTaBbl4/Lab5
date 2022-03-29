@@ -4,7 +4,9 @@ import Command.CommandManager;
 import Command.ICommand;
 import DataClasses.Worker;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class AddIfMaxCommand implements ICommand {
 
@@ -19,17 +21,20 @@ public class AddIfMaxCommand implements ICommand {
 
         AddIfMaxComparator addIfMaxComparator = new AddIfMaxComparator();
 
-        WorkersData.sort(addIfMaxComparator);
+        Collections.sort(WorkersData);
         LinkedList<Worker> newWorker = new LinkedList<>();
-        Worker worker = manager.CommandHandler("add",newWorker).get(0);
+        Worker worker = manager.CommandHandler("add " + args.replaceAll(",",""),newWorker).get(0);
 
         try{
             worker.setId(WorkersData.getLast().getId()+1);
         }
-        catch (IndexOutOfBoundsException e){
+        catch (NoSuchElementException e){
             worker.setId(1);
+            WorkersData.add(worker);
+            return WorkersData;
         }
 
+        WorkersData.sort(addIfMaxComparator);
         try {
             if(addIfMaxComparator.compare(worker,WorkersData.getLast()) > 0)
                 WorkersData.add(worker);

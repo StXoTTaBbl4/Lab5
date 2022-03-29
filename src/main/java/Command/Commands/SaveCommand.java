@@ -25,7 +25,7 @@ public class SaveCommand implements ICommand {
             try {
                 Files.createFile(Paths.get(path));
             } catch (IOException e) {
-                System.out.println("Такой файл уже существует");
+                System.out.println("Такой файл уже существует.");
             }
         }
 
@@ -50,7 +50,6 @@ public class SaveCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Сохраняет коллекцию в указанный файл. \n" +
-                "save [path]";
+        return "Сохраняет коллекцию в указанный файл.";
     }
 }

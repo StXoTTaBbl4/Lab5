@@ -5,21 +5,20 @@ import DataClasses.Worker;
 
 import java.util.LinkedList;
 
-public class ClearCommand implements ICommand {
+public class ExitCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {
-
-
-        return new LinkedList<>();
+        System.exit(0);
+        return WorkersData;
     }
 
     @Override
     public String getName() {
-        return "clear";
+        return "exit";
     }
 
     @Override
     public String getHelp() {
-        return "Очищает коллекцию.";
+        return "Завершает программу (без сохранения в файл).";
     }
 }

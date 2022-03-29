@@ -4,11 +4,6 @@ import Command.ICommand;
 import DataClasses.Person;
 import DataClasses.Worker;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 //Count greater then person
@@ -16,33 +11,48 @@ public class CountGtpCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {
 
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        Person person = new Person();
         AddCommand addCommand = new AddCommand();
-        person = addCommand.createNewPerson(reader, person);
+        Person person = new Person();
 
-        for (Worker w: WorkersData) {
-            try {
-                if (compare(w.getPerson(), person) > 0)
-                    System.out.println(w);
-            }
-            catch (NullPointerException e){
-                System.out.println("Поле person не задано у id: " + w.getId() + "\n");
+        String[] userData = args.replaceAll(",","").split(" ");
+
+        if(userData.length < 5){
+            System.out.println("Некорректно указаны поля person, должно быть 5.\n" +
+                                "Пример: 2002-02-02 12:20 180 75 passID.");
+            return WorkersData;
+        }
+        else {
+            person = addCommand.createNewPerson(userData[0], userData[1], userData[2], userData[3], userData[4], person);
+        }
+
+        int k = 0;
+        if(person == null) {
+            System.out.println("Значение person - null, невозможно подсчитать.");
+            return WorkersData;
+        }
+        else {
+            for (Worker w : WorkersData) {
+                try {
+                    if (compare(w.getPerson(), person) > 0)
+                        k++;
+                } catch (NullPointerException e) {
+                    System.out.printf("Поле person не задано у id: %s.\n", w.getId());
+                }
             }
         }
 
+        System.out.println(k);
         return WorkersData;
     }
 
     @Override
     public String getName() {
-        return null;
+        return "count_greater_than_person";
     }
 
     @Override
     public String getHelp() {
-        return null;
+        return "Выводит количество элементов, значение поля person которых больше заданного.";
     }
 
     private int compare(Person a, Person b){

@@ -13,7 +13,7 @@ public class RemoveLastCommand implements ICommand {
         try {
             WorkersData.removeLast();
         }catch (NoSuchElementException e){
-            System.out.println("Коллекция пуста");
+            System.out.println("Коллекция пуста.");
         }
 
         return WorkersData;
@@ -26,6 +26,6 @@ public class RemoveLastCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Удаляет последний элемент из коллекции";
+        return "Удаляет последний элемент из коллекции.";
     }
 }

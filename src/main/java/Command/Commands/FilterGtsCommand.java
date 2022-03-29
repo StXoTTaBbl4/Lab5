@@ -15,7 +15,7 @@ public class FilterGtsCommand implements ICommand {
             salary = Float.parseFloat(args);
         }
             catch (NumberFormatException e){
-            System.out.println("Не верный тип данных. Примем: 1500.99");
+            System.out.println("Не верный тип данных. Пример: 1500.99.");
         }
 
         for (Worker w : WorkersData) {
@@ -24,7 +24,8 @@ public class FilterGtsCommand implements ICommand {
                     System.out.println(w);
                 }
             catch (NullPointerException e){
-                System.out.println("Поле salary не задано у id: " + w.getId() + "\n");
+                if(w.getSalary() == null)
+                System.out.printf("Поле salary не задано у id: %s.\n", w.getId());
             }
         }
 

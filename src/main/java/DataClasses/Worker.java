@@ -5,25 +5,24 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public class Worker implements Comparable<Worker> {
-    private Integer id; //System, NotNull, Unique
-    private String name; //NotNull, NotEmpty
-    private Coordinates coordinates; //NotNull
-    private java.time.ZonedDateTime creationDate; //задается системой
-    private Float salary; //NotNull, >0
-    private java.time.LocalDate startDate; //NotNull
-    private java.time.LocalDateTime endDate;
-    private Position position; //Null
-    private Person person; // NotNull
+    private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    private Coordinates coordinates; //Поле не может быть null
+    private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private Float salary; //Поле не может быть null, Значение поля должно быть больше 0
+    private java.time.LocalDate startDate; //Поле не может быть null
+    private java.time.LocalDateTime endDate; //Поле может быть null
+    private Position position; //Поле может быть null
+    private Person person; //Поле не может быть null
 
-    public Worker(Integer id,
-                  String name,
-                  Coordinates coordinates,
-                  ZonedDateTime creationDate,
-                  Float salary,
-                  LocalDate startDate,
-                  LocalDateTime endDate,
-                  Position position,
-                  Person person) {
+    public Worker(){}
+
+    public Worker(Integer id, ZonedDateTime creationDate){
+        this.creationDate = creationDate;
+        this.id = id;
+    }
+
+    public Worker(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Float salary, LocalDate startDate, LocalDateTime endDate, Position position, Person person) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -33,14 +32,6 @@ public class Worker implements Comparable<Worker> {
         this.endDate = endDate;
         this.position = position;
         this.person = person;
-    }
-
-
-    public Worker(){}
-
-    public Worker(Integer id, ZonedDateTime creationDate){
-        this.creationDate = creationDate;
-        this.id = id;
     }
 
     public void setId(Integer id) {this.id = id; }
@@ -53,9 +44,7 @@ public class Worker implements Comparable<Worker> {
         this.coordinates = coordinates;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
+    public void setCreationDate(ZonedDateTime creationDate) {this.creationDate = creationDate;}
 
     public void setSalary(Float salary) {
         this.salary = salary;
@@ -127,26 +116,6 @@ public class Worker implements Comparable<Worker> {
 
     @Override
     public int compareTo(Worker o) {
-
         return this.getId() - o.getId();
     }
 }
-/*
-Float tWeight;
-        if(this.getPerson().getWeight() == null){
-            tWeight = (float) 0;
-        }else
-            tWeight = this.getPerson().getWeight();
-
-        Float oWeight;
-        if(o.getPerson().getWeight() == null){
-            oWeight = (float) 0;
-        }else
-            oWeight = o.getPerson().getWeight();
-
-        return (int) ((this.getCoordinates().getX() - o.getCoordinates().getX()) +
-                            (this.getCoordinates().getY() - o.getCoordinates().getY()) +
-                            (this.getSalary() - o.getSalary()) +
-                            (this.getPerson().getHeight() - o.getPerson().getHeight()) +
-                            (tWeight-oWeight));
- */

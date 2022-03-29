@@ -5,14 +5,12 @@ import DataClasses.Coordinates;
 import DataClasses.Person;
 import DataClasses.Position;
 import DataClasses.Worker;
-import com.sun.corba.se.impl.encoding.BufferQueue;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.time.*;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 public class AddCommand implements ICommand {
 
@@ -20,7 +18,16 @@ public class AddCommand implements ICommand {
     public LinkedList<Worker> handle(String args,LinkedList<Worker> WorkerData) {
 
         Collections.sort(WorkerData);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String[] userData = args.split(",");
+        for (int i = 0; i < userData.length; i++) {
+            userData[i] = userData[i].trim();
+        }
+
+        if(userData.length < 13){
+            System.out.println("Указаны не все параметры.");
+            return WorkerData;
+        }
+        //System.out.println(Arrays.toString(userData));
 
         Worker worker;
         Integer id;
@@ -29,107 +36,90 @@ public class AddCommand implements ICommand {
         Float salary;
         LocalDate startDate;
         LocalDateTime endDate;
-        Position position;
+        Position position = null;
         Person person = new Person();
-        //String passportID;
-        //LocalDateTime personBD;
-        //int height;
-        //Float weight;
 
         try{
             id = WorkerData.getLast().getId()+1;
         }
-        catch (IndexOutOfBoundsException e){
+        catch (NoSuchElementException e){
             id = 1;
         }
+        //System.out.println("id done");
+
+        name = userData[0];
+        if(name.equals(""))
+            System.out.println("Поле name не может быть пустым.");
+        //System.out.println("name done: " + name);
 
         try {
-            while (true) {
-                System.out.println("Поле name:(не может быть пустым):");
-                name = reader.readLine().trim();
-                if(!name.equals(""))
-                break;
-                else {
-                    System.out.println("Поле name не может быть пустым");
-                }
-            }
+            Float x = Float.parseFloat(userData[1]);
+            Double y = Double.parseDouble(userData[2]);
+            coordinates = new Coordinates(x, y);
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Ошибка типа данных у Coordinates(x/y).");
+            return WorkerData;
+        }
+        //System.out.println("coordinate done: " + coordinates);
 
-            while (true) {
-                try {
-                    System.out.println("Поле X для coordinates(не может быть пустым):");
-                    Float x = Float.parseFloat(reader.readLine());
-                    System.out.println("Поле Y для coordinates(не может быть пустым):");
-                    Double y = Double.parseDouble(reader.readLine());
-                    coordinates = new Coordinates(x, y);
-                    break;
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Ошибка типа данных");
-                }
-            }
+        try {
+            salary = Float.parseFloat(userData[3]);
+        }
+        catch (NumberFormatException e) {
+            System.out.println("Ошибка типа данных поля salary.");
+            return WorkerData;
+        }
+        //System.out.println("salary done: " + salary);
 
-            while (true) {
-                try {
-                    System.out.println("Поле salary(не может быть пустым или меньше 0):");
-                    salary = Float.parseFloat(reader.readLine());
-                    break;
-                }
-                catch (NumberFormatException e) {
-                    System.out.println("Ошибка типа данных");
-                }
-            }
+        try {
+            String[] stData = userData[4].split("-");
+            startDate = LocalDate.of(Integer.parseInt(stData[0]),
+                    Integer.parseInt(stData[1]),
+                    Integer.parseInt(stData[2]));
+        }
+        catch (DateTimeException | NumberFormatException e) {
+            System.out.println("Ошибка в данных startDate, пример: 2000-10-15.");
+            return WorkerData;
+        }
+        //System.out.println("startD done: " + startDate);
 
-            while (true) {
-                try {
-                    System.out.println("Поле startDate(формат: Г-М-Д, не может быть пустым):");
-                    String[] stData = reader.readLine().split("-");
-                    startDate = LocalDate.of(Integer.parseInt(stData[0]),
-                            Integer.parseInt(stData[1]),
-                            Integer.parseInt(stData[2]));
-                    break;
-                }
-                catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    System.out.println("Ошибка в данных, пример: 2000-10-15");
-                }
+        try {
+            String s = userData[5];
+            if(s.equals("") || s.equals("null")){
+                endDate = null;
             }
-
-            while (true) {
-                try {
-                    System.out.println("Поле endDate(формат: Г-М-Д Ч:М):");
-                    String s = reader.readLine();
-                    if(s.equals("")){
-                        endDate = null;
-                    }
-                    else {
-                        String[] enData = s.split(" ");
-                        String[] ed = enData[0].split("-");
-                        String[] et = enData[1].split(":");
-                        endDate = LocalDateTime.of(Integer.parseInt(ed[0]),
-                                Integer.parseInt(ed[1]),
-                                Integer.parseInt(ed[2]),
-                                Integer.parseInt(et[0]),
-                                Integer.parseInt(et[1]));
-                    }
-                    break;
-                }
-                catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    System.out.println("Ошибка в данных, пример: 2000-10-15");
-                }
+            else {
+                String[] ed = userData[5].split("-");
+                String[] et = userData[6].split(":");
+                endDate = LocalDateTime.of(Integer.parseInt(ed[0]),
+                        Integer.parseInt(ed[1]),
+                        Integer.parseInt(ed[2]),
+                        Integer.parseInt(et[0]),
+                        Integer.parseInt(et[1]));
             }
+        }
+        catch (DateTimeException | NumberFormatException e) {
+            System.out.println("Ошибка в данных endDate, пример: 2000-10-15.");
+            return WorkerData;
+        }
+        //System.out.println("endD done: " + endDate);
 
-            while (true) {
-                try {
-                    System.out.println("Поле position, доступные: \nMANAGER\nBAKER\nCOOK\nMANAGER_OF_CLEANING\n");
-                    position = Position.valueOf(reader.readLine());
-                    break;
-                }catch (ArrayIndexOutOfBoundsException e){
-                    position = null;
-                }
-                catch (IllegalArgumentException e){
-                    System.out.println("Некорректные данные. Пример: MANAGER");
-                }
-            }
+        try {
+            String pos = userData[7];
+            if (!pos.equals(""))
+                position = Position.valueOf(pos);
+        }
+        catch (IllegalArgumentException e){
+            System.out.println("Некорректные данные position. Пример: MANAGER.");
+            return WorkerData;
+        }
+        //System.out.println("posit done: " + position + " err " + userData[7]);
+        person = createNewPerson(userData[8],userData[9],userData[10],userData[11],userData[12], person);
 
+        if(person == null)
+            return WorkerData;
+        else {
             worker = new Worker(id,
                     name,
                     coordinates,
@@ -138,21 +128,13 @@ public class AddCommand implements ICommand {
                     startDate,
                     endDate,
                     position,
-                    createNewPerson(reader,person));
+                    person);
 
             WorkerData.add(worker);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        return WorkerData;
+            return WorkerData;
         }
-        /*
-        Gson gson = new Gson();
-        Worker worker = gson.fromJson("["+args+"]",Worker.class);
-        WorkerData.add(worker);
-         */
+    }
 
         @Override
         public String getName () {
@@ -161,65 +143,53 @@ public class AddCommand implements ICommand {
 
         @Override
         public String getHelp () {
-            return "Добавляет в коллекцию новый элемент с указанными параметрами, ввод данных построчно";
+            return "Добавляет в коллекцию новый элемент, порядок ввода:\n" +
+                    "name, X, Y, salary, startDate, endDate(date, time), position, birthday(date, time), height, weight, passportID.\n" +
+                    "Пример: Kevin 10.5 10.5 15.5 2002-02-02 null null MANAGER 2002-02-02 15:26 180 65 888888.";
         }
 
-        public Person createNewPerson(BufferedReader reader, Person person){
+        public Person createNewPerson(String birthdayDate, String birthdayTime, String height, String weight, String passportID, Person person){
 
-            while (true) {
                 try {
-                    System.out.println("Полe birthday(формат: Г-М-Д Ч:М):");
-                    String[] PData = reader.readLine().split(" ");
-                    String[] ed = PData[0].split("-");
-                    String[] et = PData[1].split(":");
+                    if (birthdayDate.equals("null"))
+                        person.setBirthday(null);
+                    else {
+                        String[] perDate = birthdayDate.split("-");
+                        String[] perTime = birthdayTime.split(":");
 
-                    person.setBirthday(LocalDateTime.of(Integer.parseInt(ed[0]),
-                            Integer.parseInt(ed[1]),
-                            Integer.parseInt(ed[2]),
-                            Integer.parseInt(et[0]),
-                            Integer.parseInt(et[1])));
-                    break;
-                } catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException | IOException e) {
-                    System.out.println("Некорректные данные поля birthday. Пример: 2000-10-12 16:35");
+                        person.setBirthday(LocalDateTime.of(Integer.parseInt(perDate[0]),
+                                Integer.parseInt(perDate[1]),
+                                Integer.parseInt(perDate[2]),
+                                Integer.parseInt(perTime[0]),
+                                Integer.parseInt(perTime[1])));
+                    }
+
+                    } catch(DateTimeException | NumberFormatException e){
+                        System.out.println("Некорректные данные поля birthday. Пример: 2000-10-12 16:35.");
                 }
-            }
 
-            while (true) {
+
                 try {
-                    System.out.println("Полe height(больше 0, не может быть пустым):");
-                    //height = Integer.parseInt(reader.readLine());
-                    person.setHeight(Integer.parseInt(reader.readLine()));
-                    break;
-                } catch (NumberFormatException | IOException e) {
-                    System.out.println("Некорректный тип данных.");
+                    person.setHeight(Integer.parseInt(height));
+                } catch (NumberFormatException e) {
+                    System.out.println("Некорректный тип данных height.");
                 }
-            }
 
-            while (true) {
                 try {
-                    System.out.println("Полe weight(больше 0):");
-                    //weight = Float.parseFloat(reader.readLine());
-                    person.setWeight(Float.parseFloat(reader.readLine()));
-                    break;
-                } catch (NumberFormatException | IOException e) {
-                    System.out.println("Некорректный тип данных.");
+                    person.setWeight(Float.parseFloat(weight));
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Некорректный тип данных weight.");
                 }
-            }
 
-            while (true) {
                 try {
-                    System.out.println("Полe passportID(от 4 до 29 символов, не может быть пустым):");
-                    String passportID = reader.readLine();
-
-                    if(passportID.length()<29 && passportID.length() > 4)
+                    if(passportID.length()<30 && passportID.length() > 3)
                         person.setPassportID(passportID);
                     else
                         throw new IOException();
-                    break;
                 } catch (IOException e) {
-                    System.out.println("Некорректная длина.");
+                    System.out.println("Некорректная длина passportID(3<x<30).");
                 }
-            }
 
             return person;
         }

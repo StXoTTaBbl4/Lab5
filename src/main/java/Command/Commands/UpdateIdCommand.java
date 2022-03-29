@@ -10,7 +10,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 
 public class UpdateIdCommand implements ICommand {
 
@@ -24,25 +23,19 @@ public class UpdateIdCommand implements ICommand {
         for (Worker w: WorkerData) {
             if(w.getId() == Integer.parseInt(data[0])) {
                 worker = w;
+                WorkerData.remove(w);
             }
         }
-        try {
-            WorkerData.remove(worker);
-        }
-        catch (NoSuchElementException e){
-            System.out.println("нету такого");
-        }
-
 
         if(worker == null)
-            System.out.println("Работник с таким ID не найден");
+            System.out.println("Работник с таким ID не найден.");
         else {
             switch (data[1]){
                 case "name":
                     try {
                         worker.setName(data[2]);
                     }catch (ArrayIndexOutOfBoundsException e){
-                        System.out.println("Поле name не может быть пустым");
+                        System.out.println("Поле name не может быть пустым.");
                     }
                     break;
                 case"coordinates":
@@ -51,10 +44,10 @@ public class UpdateIdCommand implements ICommand {
                         worker.setCoordinates(coordinates);
                     }
                     catch (ArrayIndexOutOfBoundsException e){
-                        System.out.println("Поле x или y не может быть пустым");
+                        System.out.println("Поле x или y не может быть пустым.");
                     }
                     catch (NumberFormatException e){
-                        System.out.println("Некорректный тип данных для x или y");
+                        System.out.println("Некорректный тип данных для x или y.");
                     }
                     break;
                 case"salary":
@@ -62,10 +55,10 @@ public class UpdateIdCommand implements ICommand {
                         if(Float.parseFloat(data[2]) > 0)
                             worker.setSalary(Float.parseFloat(data[2]));
                         else
-                            System.out.println("salary не может быть 0");
+                            System.out.println("salary не может быть 0.");
                     }
                     catch (NumberFormatException e){
-                        System.out.println("Некорректный тип данных для salary");
+                        System.out.println("Некорректный тип данных для salary.");
                     }
                     catch (ArrayIndexOutOfBoundsException t){
                         worker.setSalary(null);
@@ -79,22 +72,25 @@ public class UpdateIdCommand implements ICommand {
                                 Integer.parseInt(sd[2])));
                     }
                     catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e){
-                        System.out.println("Некорректные данные. Формат: Г-М-Д");
+                        System.out.println("Некорректные данные. Формат: Г-М-Д.");
                     }
                     break;
                 case"endDate":
-                    String[] ed = data[2].split("-");
-                    String[] et = data[3].split(":");
-
                     try {
+                        String[] ed = data[2].split("-");
+                        String[] et = data[3].split(":");
+
                         worker.setEndDate(LocalDateTime.of(Integer.parseInt(ed[0]),
                                 Integer.parseInt(ed[1]),
                                 Integer.parseInt(ed[2]),
                                 Integer.parseInt(et[0]),
                                 Integer.parseInt(et[1])));
                     }
-                    catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e){
-                        System.out.println("Некорректные данные. Формат: Г-М-Д Ч:М");
+                    catch (DateTimeException | NumberFormatException e){
+                        System.out.println("Некорректные данные. Формат: Г-М-Д Ч:М.");
+                    }
+                    catch ( ArrayIndexOutOfBoundsException e){
+                        worker.setEndDate(null);
                     }
                     break;
                 case"position":
@@ -104,12 +100,11 @@ public class UpdateIdCommand implements ICommand {
                         worker.setPosition(null);
                     }
                     catch (IllegalArgumentException e){
-                        System.out.println("Некорректные данные. Пример: MANAGER");
+                        System.out.println("Некорректные данные. Пример: MANAGER.");
                     }
                     break;
                 case"person":
                     Person person = new Person();
-
                     //birthday
                     try {
                         String[] edPerson = data[2].split("-");
@@ -122,23 +117,21 @@ public class UpdateIdCommand implements ICommand {
                         person.setBirthday(localDateTime);
                     }
                     catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e ) {
-                        System.out.println("Некорректные данные поля birthday. Формат: Г-М-Д Ч:М");
+                        System.out.println("Некорректные данные поля birthday. Формат: Г-М-Д Ч:М.");
                     }
-
                     //height
                     try {
                         if(Integer.parseInt(data[4]) > 0)
                         person.setHeight(Integer.parseInt(data[4]));
                         else
-                            System.out.println("Параметр height должен быть больше 0");
+                            System.out.println("Параметр height должен быть больше 0.");
                     }
                     catch (NumberFormatException e){
-                        System.out.println("Некорректный тип данных для salary");
+                        System.out.println("Некорректный тип данных для salary.");
                     }
                     catch (ArrayIndexOutOfBoundsException e){
-                        System.out.println("Поле salary не может быть пустым");
+                        System.out.println("Поле salary не может быть пустым.");
                     }
-
                     //weight
                     try {
                         if(data[5].equals("null"))
@@ -146,15 +139,14 @@ public class UpdateIdCommand implements ICommand {
                         else if(Float.parseFloat(data[5]) > 0)
                             person.setWeight(Float.parseFloat(data[5]));
                         else
-                            System.out.println("weight не может быть 0");
+                            System.out.println("weight не может быть 0.");
                     }
                     catch (NumberFormatException e){
-                        System.out.println("Некорректный тип данных для salary");
+                        System.out.println("Некорректный тип данных для salary.");
                     }
                     catch (ArrayIndexOutOfBoundsException e){
-                        System.out.println("Поле salary не может быть пустым");
+                        System.out.println("Поле salary не может быть пустым.");
                     }
-
                     //passportID
                     try{
                         if(data[6].length() < 1)
@@ -164,7 +156,8 @@ public class UpdateIdCommand implements ICommand {
                         else
                             person.setPassportID(data[6]);
                     }catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e){
-                        System.out.println("Поле passportID не должно быть пустым или\n выходить за границы 4 - 29 символов");
+                        System.out.println("Поле passportID не должно быть пустым или\n " +
+                                            "выходить за границы 4 - 29 символов.");
                     }
                     worker.setPerson(person);
                     break;
@@ -173,8 +166,6 @@ public class UpdateIdCommand implements ICommand {
             }
             WorkerData.add(worker);
         }
-
-
         return WorkerData;
     }
 
@@ -185,19 +176,6 @@ public class UpdateIdCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Обновляет параметры элемента коллекции с указанным ID";
+        return "Обновляет параметры элемента коллекции с указанным ID.";
     }
 }
-/*
-                case"y":
-                    try {
-                        worker.getCoordinates().setY(Double.parseDouble(data[2]));
-                    }
-                    catch (ArrayIndexOutOfBoundsException e){
-                        System.out.println("Поле y не может быть пустым");
-                    }
-                    catch (ClassCastException e){
-                        System.out.println("Некорректный тип данных для y");
-                    }
-                    break;
-                     */

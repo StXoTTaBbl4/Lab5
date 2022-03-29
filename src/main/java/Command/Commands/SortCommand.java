@@ -28,6 +28,6 @@ public class SortCommand implements ICommand {
 
     @Override
     public String getHelp() {
-        return "Сортирует коллекцию в естественном порядке";
+        return "Сортирует коллекцию в естественном порядке(по ID).";
     }
 }
