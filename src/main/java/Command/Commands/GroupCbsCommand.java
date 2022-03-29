@@ -4,7 +4,10 @@ import Command.ICommand;
 import DataClasses.Worker;
 
 import java.util.LinkedList;
-//group counting by salary
+
+/**
+ * Группирует элементы коллекции по значению поля salary, выводит количество элементов в каждой группе.
+ */
 public class GroupCbsCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {

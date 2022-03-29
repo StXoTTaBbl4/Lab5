@@ -11,6 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
+/**
+ * Обновляет значение элемента коллекции, id которого равен заданному.
+ */
 public class UpdateIdCommand implements ICommand {
 
 

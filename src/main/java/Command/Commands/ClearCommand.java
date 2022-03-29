@@ -5,6 +5,9 @@ import DataClasses.Worker;
 
 import java.util.LinkedList;
 
+/**
+ * Очищает коллекцию.
+ */
 public class ClearCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {

@@ -1,7 +1,9 @@
 package DataClasses;
 
 import java.time.LocalDateTime;
-
+/**
+ * Класс для создания объектов типа Person;
+ */
 public class Person {
     private java.time.LocalDateTime birthday;//Поле может быть null
     private int height;//Значение поля должно быть больше 0
@@ -10,6 +12,12 @@ public class Person {
 
     public Person(){}
 
+    /**
+     * @param birthday Поле может быть null.
+     * @param height Значение поля должно быть больше 0.
+     * @param weight Поле может быть null, Значение поля должно быть больше 0.
+     * @param passportID Длина строки должна быть не меньше 4, Строка не может быть пустой, Длина строки не должна быть больше 29, Поле не может быть null.
+     */
     public Person(LocalDateTime birthday, int height, Float weight, String passportID) {
         this.birthday = birthday;
         this.height = height;
@@ -45,6 +53,14 @@ public class Person {
         this.passportID = passportID;
     }
 
+    /** Выводит данные об объекте в виде
+     * "Birthday:
+     * "Height:
+     * "Weight:
+     * "Passport ID:
+     *
+     * @return Строковое представление объекта класса Person
+     */
     @Override
     public String toString() {
         return "Birthday: " + birthday + "\n" +

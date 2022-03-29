@@ -3,7 +3,9 @@ package DataClasses;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-
+/**
+ * Класс - шаблон для элементов коллекции.
+ */
 public class Worker implements Comparable<Worker> {
     private Integer id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
@@ -17,11 +19,28 @@ public class Worker implements Comparable<Worker> {
 
     public Worker(){}
 
+    /**
+     *
+     * @param id Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным и генерироваться автоматически
+     * @param creationDate Поле не может быть null, Значение этого поля должно генерироваться автоматически
+     */
     public Worker(Integer id, ZonedDateTime creationDate){
         this.creationDate = creationDate;
         this.id = id;
     }
 
+    /**
+     *
+     * @param id Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным и генерироваться автоматически
+     * @param name Поле не может быть null, Строка не может быть пустой
+     * @param coordinates Поле не может быть null
+     * @param creationDate Поле не может быть null, Значение этого поля должно генерироваться автоматически
+     * @param salary Поле не может быть null, Значение поля должно быть больше 0
+     * @param startDate Поле не может быть null
+     * @param endDate Поле может быть null
+     * @param position Поле может быть null
+     * @param person Поле не может быть null
+     */
     public Worker(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Float salary, LocalDate startDate, LocalDateTime endDate, Position position, Person person) {
         this.id = id;
         this.name = name;
@@ -102,6 +121,10 @@ public class Worker implements Comparable<Worker> {
         return person;
     }
 
+    /**
+     *
+     * @return Строковое представление объекта класса Worker.
+     */
     @Override
     public String toString() {
         return "Worker " + name + ", id: " + id +"\n"+
@@ -114,6 +137,11 @@ public class Worker implements Comparable<Worker> {
 
     }
 
+    /** Метод сравнивает объекты на основе их полей ID. Применяется для упорядочивания объектов коллекции.
+     *
+     * @param o Объект, с котором нужно сравнить.
+     * @return Возвращает число, которое определяет, какой из объектов больше.
+     */
     @Override
     public int compareTo(Worker o) {
         return this.getId() - o.getId();

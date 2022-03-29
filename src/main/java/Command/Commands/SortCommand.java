@@ -6,6 +6,9 @@ import DataClasses.Worker;
 import java.util.Collections;
 import java.util.LinkedList;
 
+/**
+ * Сортирует коллекцию в естественном порядке(по ID).
+ */
 public class SortCommand implements ICommand {
 
     @Override

@@ -8,10 +8,17 @@ import java.io.*;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * Считывает и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.
+ */
 public class ExecuteScriptCommand implements ICommand {
 
     private final CommandManager manager;
 
+    /** Запрашивает существующий commandManager для возможности вызова у них методов help и getName.
+     *
+     * @param manager CommandManager для доступа к методу handle команд.
+     */
     public ExecuteScriptCommand(CommandManager manager) {
         this.manager = manager;
     }

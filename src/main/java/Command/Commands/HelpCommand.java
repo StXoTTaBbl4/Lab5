@@ -6,11 +6,17 @@ import DataClasses.Worker;
 
 import java.util.LinkedList;
 
-
+/**
+ * Выводит справку по доступным командам.
+ */
 public class HelpCommand implements ICommand {
 
     private final CommandManager manager;
 
+    /** Запрашивает существующий commandManager для возможности вызова у них методов help и getName.
+     *
+     * @param manager CommandManager для доступа к методам других команд.
+     */
     public HelpCommand(CommandManager manager) {
         this.manager = manager;
     }

@@ -8,6 +8,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * Класс,используемый для корректной сериализации поля creationDate объектов класса Worker.
+ */
 public class ZonedDateTimeSerializer implements JsonSerializer<ZonedDateTime> {
     @Override
     public JsonElement serialize(ZonedDateTime src, Type typeOfSrc, JsonSerializationContext context) {

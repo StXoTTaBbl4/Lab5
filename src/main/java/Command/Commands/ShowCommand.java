@@ -5,6 +5,9 @@ import DataClasses.Worker;
 
 import java.util.LinkedList;
 
+/**
+ * Выводит в стандартный поток вывода все элементы коллекции в строковом представлении.
+ */
 public class ShowCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {

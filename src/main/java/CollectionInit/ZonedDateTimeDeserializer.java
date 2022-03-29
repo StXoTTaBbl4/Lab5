@@ -10,6 +10,9 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * Класс,используемый для корректной десериализации поля creationDate объектов класса Worker.
+ */
 public class ZonedDateTimeDeserializer implements JsonDeserializer<ZonedDateTime> {
     @Override
     public ZonedDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

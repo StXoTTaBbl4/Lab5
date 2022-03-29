@@ -9,14 +9,25 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Класс, который отвечает за обработку пользовательских команд и передачу их дальше для исполнения.
+ */
 public class CommandManager {
 
     private final List<ICommand> commands = new ArrayList<>();
 
+    /**
+     * @return Список доступных команд.
+     */
     public List<ICommand> getCommands() {
         return commands;
     }
 
+    /** Конструктор, в который добавляются все объекты классов-команд с помощью {@link CommandManager#addCommand(ICommand)}.
+     *
+     *
+     * @param path Путь к файлу, содержащему коллекцию.
+     */
     public CommandManager(String path){
         addCommand(new AddCommand());
         addCommand(new AddIfMaxCommand(this));
@@ -36,6 +47,10 @@ public class CommandManager {
         addCommand(new UpdateIdCommand());
     }
 
+    /** Внутренний метод для добавления команды в общий список доступных команд.
+     *
+     * @param cmd Объект класса-команды
+     */
     private void addCommand(ICommand cmd){
         boolean nameFound = this.commands.stream().anyMatch((it) -> it.getName().equalsIgnoreCase(cmd.getName()));
         if(nameFound){
@@ -44,6 +59,11 @@ public class CommandManager {
         commands.add(cmd);
     }
 
+    /** Метод для поиска команды по ее имени.
+     *
+     * @param search имя искомой команды.
+     * @return В случае существования команды возвращает объект класса-команды.
+     */
     public ICommand getCommand(String search){
         String searchLower = search.toLowerCase();
 
@@ -55,6 +75,12 @@ public class CommandManager {
         return null;
     }
 
+    /** Метод, передающий параметры для исполнения команды методу handle объекта класса-команды.
+     *
+     * @param input Строка, содержащая има команды и аргументы.
+     * @param WorkerData Коллекция, с которой взаимодействует программа.
+     * @return Коллекция после ее обработки в соответствии с командой.
+     */
     public LinkedList<Worker> CommandHandler(String input,LinkedList<Worker> WorkerData){
         String[] data = input.split(" ");
 

@@ -10,9 +10,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+/**
+ * Выводит в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов).
+ */
 public class InfoCommand  implements ICommand {
     String path;
 
+    /**
+     *
+     * @param path Путь к файлу коллекции.
+     */
     public InfoCommand(String path) {
         this.path = path;
     }

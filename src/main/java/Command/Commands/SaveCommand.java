@@ -13,6 +13,9 @@ import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 
+/**
+ * Сохраняет коллекцию в файл.
+ */
 public class SaveCommand implements ICommand {
 
 

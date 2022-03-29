@@ -6,7 +6,9 @@ import DataClasses.Worker;
 
 import java.util.LinkedList;
 
-//Count greater then person
+/**
+ * Выводит количество элементов, значение поля person которых больше заданного.
+ */
 public class CountGtpCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {

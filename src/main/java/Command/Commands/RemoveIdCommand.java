@@ -5,6 +5,9 @@ import DataClasses.Worker;
 
 import java.util.LinkedList;
 
+/**
+ * Удаляет элемент из коллекции по его id.
+ */
 public class RemoveIdCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {

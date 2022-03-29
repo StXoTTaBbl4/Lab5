@@ -6,6 +6,9 @@ import DataClasses.Worker;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+/**
+ * Удаляет последний элемент из коллекции.
+ */
 public class RemoveLastCommand implements ICommand {
     @Override
     public LinkedList<Worker> handle(String args, LinkedList<Worker> WorkersData) {

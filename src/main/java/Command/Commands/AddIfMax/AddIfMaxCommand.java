@@ -8,6 +8,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+/**
+ * добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции
+ */
 public class AddIfMaxCommand implements ICommand {
 
     CommandManager manager;

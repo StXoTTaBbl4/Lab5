@@ -1,5 +1,7 @@
 package DataClasses;
-
+/**
+ * E-num содержащий позиции для класса Worker.
+ */
 public enum Position {
     MANAGER,
     BAKER,

@@ -12,8 +12,15 @@ import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+/**
+ * Класс, используемый для инициализации коллеккции и проверке ее элементов при запуске программы.
+ */
 public class Initializer {
 
+    /** Метод для проверки полей объекта на соответствие требованиям.
+     *
+     * @param worker Проверяемый объект.
+     */
     public void DataChecker(Worker worker){
         if(worker.getName().equals(null) || worker.getName().equals(""))
             System.out.printf("У работника с id: %s не задано имя \n", worker.getId());
@@ -39,6 +46,11 @@ public class Initializer {
             System.out.printf("У работника с id: %s некорректно задано поле passportID(3<x<30) \n", worker.getId());
     }
 
+    /** Метод для загрузки коллекции из файла.
+     *
+     * @param path Путь к файлу с данными.
+     * @return Коллекуиця типа LinkedList.
+     */
     public LinkedList<Worker> initializeCollection(String path){
         LinkedList<Worker> WorkersData = null;
 

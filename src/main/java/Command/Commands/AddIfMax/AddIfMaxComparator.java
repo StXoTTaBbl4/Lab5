@@ -4,6 +4,9 @@ import DataClasses.Worker;
 
 import java.util.Comparator;
 
+/**
+ * Класс - компаратор для команды add_if_max, позволяет проводить сравнение объектов класса Worker.
+ */
 public class AddIfMaxComparator implements Comparator<Worker> {
     @Override
     public int compare(Worker a, Worker b) {

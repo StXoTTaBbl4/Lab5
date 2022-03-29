@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+/**
+ * Добавляет новый элемент в коллекцию.
+ */
 public class AddCommand implements ICommand {
 
     @Override
